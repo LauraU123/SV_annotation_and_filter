@@ -1,0 +1,11 @@
+
+
+outputdir: "filtering_output/"
+# specify the species of interest. a controls file with the same species must be provided in the controls folder
+species: "cattle"
+inputdir: "input_vcfs/"
+#specify your input VCF
+vcf: "cattle.sv.vcf.gz"
+# specify if strict. When strict mode is on, only variants with 1/1 will be included. In a not strict mode, the SVs can also include 
+mode: "recessive"
+chr: "15"
