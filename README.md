@@ -3,11 +3,12 @@
 This simple workflow filters vcf files based on provided cases, and automatically detects remaining samples as controls.
 To run the workflow, you must provide
 
+## Input Files 
 * your input VCF containing multiple samples
 * a cases file
 * file names and output directory locations in the config file
 
-## Cases file
+### Cases file
 
 to use the tool, you need a file specifying cases.
 Please add it in the format "cases/{species}_chr{number}.txt"
@@ -16,6 +17,8 @@ the file should be a text file with a new line for each sample, i.e.:
 case1
 case2
 case3
+
+### Samples to exclude
 
 ## Filtering modes
 
