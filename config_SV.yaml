@@ -1,11 +1,14 @@
 
-
+###PLEASE SPECIFY INPUT DIRECTORIES AND FILES HERE
 outputdir: "filtering_output/"
-# specify the species of interest. a controls file with the same species must be provided in the controls folder
-species: "cattle"
 inputdir: "input_vcfs/"
-#specify your input VCF
 vcf: "cattle.sv.vcf.gz"
-# specify if strict. When strict mode is on, only variants with 1/1 will be included. In a not strict mode, the SVs can also include 
+
+###PLEASE SPECIFY SPECIES, CHROMOSOME, AND FIILTERING MODE (RECESSIVE OR DOMINANT)
+species: "cattle"
 mode: "recessive"
 chr: "15"
+
+###PLEASE SPECIFY YOUR CASE SAMPLES AND SAMPLES TO EXCLUDE (OPTIONAL). ALL REMAINING SAMPLES ARE TREATED AS CASES
+#EXAMPLE: case_samples = ["sample1", "sample2", "sample3"]
+"exclude_samples": []
