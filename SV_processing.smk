@@ -1,4 +1,4 @@
-# this workflow is to test the inputs and outputs of the variant calling file in sheep
+
 configfile: "config_SV.yaml"
 OUTPUT_DIR = config["outputdir"]
 INPUT_DIR = config["inputdir"]
