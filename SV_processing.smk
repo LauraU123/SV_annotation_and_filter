@@ -49,9 +49,11 @@ rule filter_svs:
         """
         
 rule get_samples:
+    message:
+        """Finding the cases based on the controls..."""
     input:
         vcf = rules.filter_svs.output,
-        controls = "controls/{species}_chr{chrs}.txt"
+        cases = "cases/{species}_chr{chrs}.txt"
     output:
         cases = "temp/{species}_{chrs}/cases.txt",
         ctrls = "temp/{species}_{chrs}/controls_verified.txt"
@@ -67,10 +69,10 @@ rule get_samples:
         bcftools query -l {input.vcf} > {params.all_samples}
         
         # Verify controls exist in VCF
-        grep -wFf {input.controls} {params.all_samples} > {output.ctrls}
+        grep -wFf {input.cases} {params.all_samples} > {output.cases}
         
         # Cases = All samples not in controls
-        grep -v -wFf {output.ctrls} {params.all_samples} > {output.cases}
+        grep -v -wFf {output.cases} {params.all_samples} > {output.ctrls}
         """
 
 # Step 2: Filter variants (1/1 in all cases, not 1/1 in any control)
