@@ -1,21 +1,21 @@
 # SV_filtering
 
-This simple workflow filters vcf files based on provided controls, and automatically detects remaining samples as cases.
+This simple workflow filters vcf files based on provided cases, and automatically detects remaining samples as controls.
 To run the workflow, you must provide
 
 * your input VCF containing multiple samples
-* a controls file
+* a cases file
 * file names and output directory locations in the config file
 
-## Controls file
+## Cases file
 
-to use the tool, you need a file specifying controls.
-Please add it in the format "controls/{species}_chr{number}.txt"
+to use the tool, you need a file specifying cases.
+Please add it in the format "cases/{species}_chr{number}.txt"
 the file should be a text file with a new line for each sample, i.e.:
 
-control1
-control2
-control3
+case1
+case2
+case3
 
 ## Filtering modes
 
