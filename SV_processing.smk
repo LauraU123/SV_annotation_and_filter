@@ -36,46 +36,65 @@ rule filter_svs:
     message:
         """Filtering the structural variants in chromosome {chrs} based on quality..."""
     input: rules.extract_chromosome.output
-    output: OUTPUT_DIR + "{chrs}_filtered.sv.vcf.gz"
+    output: 
+        filtered_vcf = OUTPUT_DIR + f"{chrs}_filtered.sv.vcf.gz"
     resources:
         mem="50G",
         time="00:30:00",
         cpus=30 
     threads: 30
+    params:
+        exclude_samples= ",".join(config["exclude_samples"])
     shell:
         """
         module load BCFtools
-        bcftools filter -i 'INFO/SVLEN>1000 && QUAL>30' {input} > {output}
+        if [ -n "{params.exclude_samples}" ]; then
+            echo "{params.exclude_samples}" | tr ',' '\\n' > temp/exclude_samples.txt
+            echo "Excluding samples: $(cat temp/exclude_samples.txt)"
+            bcftools view -S ^temp/exclude_samples.txt {input} > {output.filtered_vcf}
+        else
+            cp {input} {output.filtered_vcf}
+        fi
         """
+
+"""
+        module load BCFtools
+        if [ -n "{params.exclude_samples}" ]; then
+            echo "{params.exclude_samples}" | tr ',' '\\n' > temp/exclude_samples.txt
+            echo "Excluding samples: $(cat temp/exclude_samples.txt)"
+            bcftools filter -i 'INFO/SVLEN>1000 && QUAL>30' {input} | bcftools view -S ^temp/exclude_samples.txt -o {output.filtered_vcf}
+        else
+            bcftools filter -i 'INFO/SVLEN>1000 && QUAL>30' {input} > {output.filtered_vcf}
+        fi
+"""
         
 rule get_samples:
     message:
         """Finding the cases based on the controls..."""
     input:
         vcf = rules.filter_svs.output,
-        cases = "cases/{species}_chr{chrs}.txt"
     output:
-        cases = "temp/{species}_{chrs}/cases.txt",
-        ctrls = "temp/{species}_{chrs}/controls_verified.txt"
+        cases = "temp/{species}/cases.txt",
+        ctrls = "temp/{species}/controls_verified.txt"
     resources:
         mem="20G",
         time="00:30:00",
         cpus=30 
     params:
-        all_samples = "temp/{species}_{chrs}/all_samples.txt"
+        all_samples = "temp/{species}/all_samples.txt",
+        case_samples= ",".join(config["case_samples"]),
     shell:
         """
         module load BCFtools
         bcftools query -l {input.vcf} > {params.all_samples}
         
-        # Verify controls exist in VCF
-        grep -wFf {input.cases} {params.all_samples} > {output.cases}
+        # Verify cases exist in VCF
+        echo "{params.case_samples}" | tr ',' '\\n' > temp/case_samples.txt
+        grep -wFf temp/case_samples.txt {params.all_samples} > {output.cases}
         
-        # Cases = All samples not in controls
         grep -v -wFf {output.cases} {params.all_samples} > {output.ctrls}
         """
 
-# Step 2: Filter variants (1/1 in all cases, not 1/1 in any control)
 rule filter_variants_cases:
     message:
         """Filtering based on case genotypes..."""
