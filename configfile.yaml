@@ -1,0 +1,9 @@
+input_dir : ""
+
+species: "sheep"
+
+reference: ""
+
+gtf: ""
+
+vcf: ""
