@@ -7,6 +7,16 @@ To run the workflow, you must provide
 * a controls file
 * file names and output directory locations in the config file
 
+## Controls file
+
+to use the tool, you need a file specifying controls.
+Please add it in the format "controls/{species}_chr{number}.txt"
+the file should be a text file with a new line for each sample, i.e.:
+
+control1
+control2
+control3
+
 ## Filtering modes
 
 Two modes are included in this workflow: 
