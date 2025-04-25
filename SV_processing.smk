@@ -57,16 +57,6 @@ rule filter_svs:
         fi
         """
 
-"""
-        module load BCFtools
-        if [ -n "{params.exclude_samples}" ]; then
-            echo "{params.exclude_samples}" | tr ',' '\\n' > temp/exclude_samples.txt
-            echo "Excluding samples: $(cat temp/exclude_samples.txt)"
-            bcftools filter -i 'INFO/SVLEN>1000 && QUAL>30' {input} | bcftools view -S ^temp/exclude_samples.txt -o {output.filtered_vcf}
-        else
-            bcftools filter -i 'INFO/SVLEN>1000 && QUAL>30' {input} > {output.filtered_vcf}
-        fi
-"""
         
 rule get_samples:
     message:
