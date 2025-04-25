@@ -11,4 +11,5 @@ chr: "15"
 
 ###PLEASE SPECIFY YOUR CASE SAMPLES AND SAMPLES TO EXCLUDE (OPTIONAL). ALL REMAINING SAMPLES ARE TREATED AS CASES
 #EXAMPLE: case_samples = ["sample1", "sample2", "sample3"]
-"exclude_samples": []
+exclude_samples: []
+case_samples: []
